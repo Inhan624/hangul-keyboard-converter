@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>한영 키보드 변환기</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- 상단 메뉴 -->
+    <header class="navbar">
+      <div class="logo">한영 변환기</div>
+
+      <nav>
+        <a href="#">홈</a>
+        <a href="#">사용법</a>
+        <a href="#">정보</a>
+      </nav>
+    </header>
+
+    <!-- 메인 영역 -->
+    <main>
+      <p style="text-align: center;">쌍자음과 이중 모음(ㅘ, ㅙ 등)이 정상적으로 조합되지 않습니다. <br>
+      아직 미완성이므로 디자인 관련 의견만 받도록 하겠습니다.</p>
+      <section class="converter-section">
+        <textarea
+          id="input-text"
+          placeholder="잘못 입력한 문장을 입력하세요."
+        ></textarea>
+
+        <div class="arrow">→</div>
+
+        <div class="output" id="output-text">변환 결과가 여기에 표시됩니다.</div>
+      </section>
+    </main>
+
+    <!-- 하단 -->
+    <footer>
+      <p>Made by 김미나</p>
+      <p>Version 0.1</p>
+
+      <a
+        href="https://github.com/inhan624/hangul-keyboard-converter/issues"
+        target="_blank"
+        class="issue-btn"
+      >
+        버그 제보 / 의견 보내기
+      </a>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/converter.js"></script>
+  </body>
+</html>
