@@ -1,13 +1,18 @@
 /*키보드 매핑 만들었어요*/
 console.log("키보드 매핑 임무 완수-. 이제 정말 '변환'하실 수 있는 겁니다-!");
-
-/* 한글 유니코드는 그냥 계산해서 만들어져서 하나하나 다 값을 정해줘야대 */
+/* 키보드 매핑 */
 const engToKor = {
   q: "ㅂ",
+  Q: "ㅃ",
   w: "ㅈ",
+  W: "ㅉ",
   e: "ㄷ",
+  E: "ㄸ",
   r: "ㄱ",
+  R: "ㄲ",
   t: "ㅅ",
+  T: "ㅆ",
+
   y: "ㅛ",
   u: "ㅕ",
   i: "ㅑ",
@@ -34,103 +39,67 @@ const engToKor = {
   m: "ㅡ",
 };
 
-const CHO = [
-  "ㄱ",
-  "ㄲ",
-  "ㄴ",
-  "ㄷ",
-  "ㄸ",
-  "ㄹ",
-  "ㅁ",
-  "ㅂ",
-  "ㅃ",
-  "ㅅ",
-  "ㅆ",
-  "ㅇ",
-  "ㅈ",
-  "ㅉ",
-  "ㅊ",
-  "ㅋ",
-  "ㅌ",
-  "ㅍ",
-  "ㅎ",
-];
+/* 초성/중성/종성 */
+const CHO = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
 
-const JUNG = [
-  "ㅏ",
-  "ㅐ",
-  "ㅑ",
-  "ㅒ",
-  "ㅓ",
-  "ㅔ",
-  "ㅕ",
-  "ㅖ",
-  "ㅗ",
-  "ㅘ",
-  "ㅙ",
-  "ㅚ",
-  "ㅛ",
-  "ㅜ",
-  "ㅝ",
-  "ㅞ",
-  "ㅟ",
-  "ㅠ",
-  "ㅡ",
-  "ㅢ",
-  "ㅣ",
-];
+const JUNG = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
 
-const JONG = [
-  "",
-  "ㄱ",
-  "ㄲ",
-  "ㄳ",
-  "ㄴ",
-  "ㄵ",
-  "ㄶ",
-  "ㄷ",
-  "ㄹ",
-  "ㄺ",
-  "ㄻ",
-  "ㄼ",
-  "ㄽ",
-  "ㄾ",
-  "ㄿ",
-  "ㅀ",
-  "ㅁ",
-  "ㅂ",
-  "ㅄ",
-  "ㅅ",
-  "ㅆ",
-  "ㅇ",
-  "ㅈ",
-  "ㅊ",
-  "ㅋ",
-  "ㅌ",
-  "ㅍ",
-  "ㅎ",
-];
+const JONG = ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
 
+/* 쌍모음 처리 */
+function combineVowel(v1, v2) {
+  if (v1 === "ㅗ" && v2 === "ㅏ") return "ㅘ";
+  if (v1 === "ㅗ" && v2 === "ㅐ") return "ㅙ";
+  if (v1 === "ㅗ" && v2 === "ㅣ") return "ㅚ";
+
+  if (v1 === "ㅜ" && v2 === "ㅓ") return "ㅝ";
+  if (v1 === "ㅜ" && v2 === "ㅔ") return "ㅞ";
+  if (v1 === "ㅜ" && v2 === "ㅣ") return "ㅟ";
+
+  if (v1 === "ㅡ" && v2 === "ㅣ") return "ㅢ";
+
+  return null;
+}
+
+/* 핵심 변환 함수 */
 function convert(text) {
-  let jamo = "";
+  // 1️⃣ 영어 → 자모 변환
+  let jamoArr = [];
 
   for (let char of text) {
-    jamo += engToKor[char] || char;
+    jamoArr.push(engToKor[char] || char);
   }
 
+  // 2️⃣ 쌍모음 합치기
+  let processed = [];
+
+  for (let i = 0; i < jamoArr.length; i++) {
+    const current = jamoArr[i];
+    const next = jamoArr[i + 1];
+
+    const combined = combineVowel(current, next);
+
+    if (combined) {
+      processed.push(combined);
+      i++;
+    } else {
+      processed.push(current);
+    }
+  }
+
+  // 3️⃣ 한글 조합
   let result = "";
 
-  for (let i = 0; i < jamo.length; i++) {
-    const cho = CHO.indexOf(jamo[i]);
-    const jung = JUNG.indexOf(jamo[i + 1]);
+  for (let i = 0; i < processed.length; i++) {
+    const cho = CHO.indexOf(processed[i]);
+    const jung = JUNG.indexOf(processed[i + 1]);
 
-    /*핫ㅔ요 부분이 하세요로 바뀜 왜냐하면 뒤에 중성이 오면 받침이 뒤에 종성이랑 결합하게 코드를 짰응께!*/
     if (cho !== -1 && jung !== -1) {
       let jong = 0;
 
-      const nextJong = JONG.indexOf(jamo[i + 2]);
+      const nextJong = JONG.indexOf(processed[i + 2]);
 
-      if (nextJong !== -1 && JUNG.indexOf(jamo[i + 3]) === -1) {
+      if (nextJong !== -1 && JUNG.indexOf(processed[i + 3]) === -1) {
         jong = nextJong;
       }
 
@@ -140,7 +109,7 @@ function convert(text) {
 
       i += jong ? 2 : 1;
     } else {
-      result += jamo[i];
+      result += processed[i];
     }
   }
 

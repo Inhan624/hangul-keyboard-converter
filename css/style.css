@@ -148,3 +148,7 @@ footer {
 .output.active {
   color: #000;   /* 👈 출력 시작 검정 */
 }
+
+p {
+  margin-bottom: 40px;
+}
